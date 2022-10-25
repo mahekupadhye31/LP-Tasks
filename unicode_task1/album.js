@@ -1,24 +1,34 @@
- for(let i=0;i<50;i++){
-
-    async function display_album_list(){
-    let response= await fetch("https://jsonplaceholder.typicode.com/photos");
-    response= await response.json();
-
-    let data=response.slice(0,i);
-    console.log(response);
-
-    let tableData="";
-    data.forEach(stats);
-    function stats(values){
-        tableData+= `<tr>
-        <td>${values.id}</td>
-        <td>${values.title}</td>
-        <td><button type="button" class="btn btn-warning"><a style="text-decoration:none;" href="photos.html" target="_blank"> View Photos</a></button></td>
-        </tr>`;
-
-    }
-    document.getElementById("table_body").innerHTML=tableData;
-    return data;
+function getuser() {
+    var useid = localStorage.getItem("userid");
+    console.log(useid);
+    let dis="";
+    dis=`<h4> Welcome User ${useid}</h4>`;
+    document.getElementById("welcome").innerHTML=dis;
+    fetch(`https://jsonplaceholder.typicode.com/users/${useid}/albums`)
+    .then((data1)=>{
+        console.log(data1)
+        return data1.json();
+      })
+    .then((objectdata1)=>{
+        console.log(objectdata1[0].title);
+        let todo="";
+        objectdata1.map((values1)=>{
+             var Userid=values1.albumId;
+             todo +=`<tr id="todoitem">           
+                <td>${values1.id}</td>
+                <td>${values1.title}</td>
+                <td ><button type="button" class="btn btn-warning"><a href="photos.html" style="text-decoration:none; color:white;" onClick="getUserId(${Userid})">View Photos</a></button></td>
+                
+                
+                    
+          </tr>`
+        })
+        document.getElementById("tododata").innerHTML=todo;
+    })
 }
-display_album_list();
+
+function getUserPhotoId(id)
+{
+  console.log(id);
+  localStorage.setItem("useridphoto", id);
 }
