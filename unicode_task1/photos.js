@@ -1,23 +1,36 @@
-async function display_photos(){
-    let response= await fetch("https://jsonplaceholder.typicode.com/photos");
-    response= await response.json();
+function getuserphoto(){
+    let dis="";
+    var useid = localStorage.getItem("userid");
+    console.log(useid)
+    dis+=`<h4>welcome user ${useid}</h4>`
+    document.getElementById("dis").innerHTML=dis
 
-    let data=response.slice(0,50);
-    console.log(response);
 
-     let tableData="";
-     data.forEach(stats);
-    function stats(values){
-        tableData+= `<div>
-        <span class=" my-4 mx-4">
-        <img src=" ${values.thumbnailUrl}">
-        </span>
-        <br>
-        <span>${values.id}</span>
-        </div>`;
-       
-    }
-    document.getElementById("table_body").innerHTML=tableData;
-    return data;
+    fetch(`https://jsonplaceholder.typicode.com/albums/${useid}/photos`)
+    .then((data1)=>{
+        console.log(data1)
+        return data1.json();
+      })
+    .then((objectdata1)=>{
+        let photoss="";
+        
+        objectdata1.map((values1)=>{
+        photoss+=`
+        <div class="grid text-center">
+                <div class="g-col-4" id="grid">
+                    <div class="card" style="width: 18rem;">
+                        <img src="${values1.thumbnailUrl}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">${values1.id}</h5>
+                         
+                        </div>
+                      </div>
+                </div>
+        
+        `
+        })
+        document.getElementById("gallerydis").innerHTML=photoss
+    })
+
+
 }
-display_photos();
